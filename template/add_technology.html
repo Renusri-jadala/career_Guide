@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main %}
+<style>
+    /* General Styles */
+    .inFormBackground {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        margin: 0;
+    }
+    .inLoginForm {
+        background-color:  #2af3e241;
+        backdrop-filter: blur(10px);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.836);
+        max-width: 400px;
+        width: 100%;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .inputGroup {
+        margin-bottom: 20px;
+    }
+
+    .inputGroup label {
+        display: block;
+        margin-bottom: 8px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    .inputGroup input,select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        font-size: 14px;
+        transition: border-color 0.3s ease, background 0.3s ease;
+    }
+    option{
+        color: #181817;
+    }
+    .inputGroup input:focus {
+        border-color: #181817;
+        background: rgba(255, 255, 255, 0.2);
+        outline: none;
+    }
+    .inputGroup input::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+    }
+    .submitForm {
+        width: 100%;
+        padding: 12px;
+        background: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .submitForm:hover {
+        background: rgba(0, 0, 0, 0.959);
+        transform: translateY(-2px);
+    }
+    .submitForm:active {
+        transform: translateY(0);
+    }
+
+    p {
+        margin-top: 15px;
+    }
+    p a {
+        color: rgb(0, 0, 0);
+        text-decoration: none;
+        font-size: 14px;
+        transition: color 0.3s ease;
+        margin: 0;
+    }
+    p a:hover {
+        color: rgba(0, 0, 0, 0.8);
+    }
+    .message {
+        text-align: center;
+        color: #09dfee;
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+    
+    h2 {
+        text-align: center;
+        color: #09dfee; /* Red for headings */
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    @media (max-width: 600px) {
+        .inFormBackground {
+            padding: 10px;
+        }
+        .inLoginForm {
+            padding: 20px;
+        }
+        .inputGroup input {
+            padding: 10px;
+        }
+        .submitForm {
+            padding: 10px;
+        }
+    }
+</style>
+<div class="inFormBackground">
+    <div class="inLoginForm">
+        <h2>Add Technology</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="inputGroup">
+                <label for="name">Technology Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter technology name" required>
+            </div>
+
+            <div class="inputGroup">
+                <label for="career_path">Career Path</label>
+                <select id="career_path" name="career_path" required>
+                    <option value="">Select Career Path</option>
+                    {% for career in careers %}
+                    <option value="{{ career.id }}">{{ career.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="inputGroup">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" placeholder="Enter technology description" rows="2"></textarea>
+            </div>
+
+            <div class="inputGroup">
+                <label for="link">Reference Link</label>
+                <input type="text" id="link" name="link" placeholder="Enter reference link" required>
+            </div>
+
+            <button type="submit" class="submitForm">Add Technology</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

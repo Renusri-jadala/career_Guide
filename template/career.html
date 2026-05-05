@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main %}
+<style>
+    .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 20px auto;
+        text-align: center;
+    }
+    
+    h2 {
+        color: #333;
+        margin-bottom: 20px;
+    }
+    
+    .career-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .career-card {
+        background: white;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+    
+    .career-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .career-card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+    
+    .career-card h3 {
+        margin: 10px 0;
+        color: #333;
+    }
+    
+    .career-card p {
+        font-size: 14px;
+        color: #666;
+    }
+    
+    .career-card a {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 8px 12px;
+        background: #09dfee;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+    
+    .career-card a:hover {
+        background:#0ed4e2;
+    }
+    
+</style>
+<div class="container">
+    <h2>Career Paths</h2>
+    <div class="career-grid">
+        {% for career in careers %}
+        <div class="career-card">
+            <img src="{{ career.image.url }}" alt="{{ career.name }}">
+            <h3>{{ career.name }}</h3>
+            <p>{{ career.description|truncatewords:20 }}</p>
+            <a href="{% url 'technologies' pk=career.id %}">View Details</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

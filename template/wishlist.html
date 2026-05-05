@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main %}
+<style>
+/* General Page Styling */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+/* Page Heading */
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+/* Career Grid Layout */
+.career-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* Career Card */
+.career-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.career-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Career Image */
+.career-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Career Name */
+.career-card h3 {
+    margin: 15px 0;
+    color: #333;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Career Description */
+.career-card p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+/* View Technologies Button */
+.career-card .t{
+    display: inline-block;
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.career-card t:hover {
+    background: #0056b3;
+}
+
+/* Wishlist Remove Button */
+.remove-wishlist-btn {
+    margin-top: 10px;
+    padding: 10px 14px;
+    border: none;
+    background: red;
+    color: white;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.remove-wishlist-btn:hover {
+    background: darkred;
+    transform: scale(1.05);
+}
+
+/* Confirmation Popup */
+.confirmation-box {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    z-index: 1000;
+}
+
+.confirmation-box button {
+    margin: 10px;
+    padding: 8px 14px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.confirm-btn {
+    background: #28a745;
+    color: white;
+    margin: 10px;
+    padding: 8px 14px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.cancel-btn {
+    background: #dc3545;
+    color: white;
+}
+
+/* Overlay */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .career-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: 95%;
+    }
+    .career-card {
+        padding: 15px;
+    }
+    h2 {
+        font-size: 22px;
+    }
+    .remove-wishlist-btn {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+}
+</style>
+
+<div class="container">
+    <h2>My Wishlist</h2>
+    {% if wishlist_items %}
+    <div class="career-grid">
+        {% for item in wishlist_items %}
+        <div class="career-card">
+            <img src="{{ item.career.image.url }}" alt="{{ item.career.name }}">
+            <h3>{{ item.career.name }}</h3>
+            <p>{{ item.career.description|truncatewords:20 }}</p>
+            <a href="{% url 'technologies' item.career.id %}" class="t">View Technologies</a>
+            <a href="{% url 'remove_item' pk=item.id %}" class="remove-wishlist-btn">❌ Remove</a>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="overlay" id="overlay"></div>
+    {% else %}
+    <p>No careers in your wishlist yet.</p>
+    {% endif %}
+</div>
+{% endblock %}
